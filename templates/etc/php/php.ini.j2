@@ -1,0 +1,62 @@
+; {{ ansible_managed }}
+
+[PHP]
+; engine
+engine                 = {{ php_engine | ternary('On','Off') }}
+expose_php             = {{ php_expose_php | ternary('On','Off') }}
+
+; limits
+max_execution_time     = {{ php_max_execution_time }}
+memory_limit           = {{ php_memory_limit }}
+default_socket_timeout = {{ php_default_socket_timeout }}
+
+; errors
+error_reporting        = {{ php_error_reporting }}
+html_errors            = {{ php_html_errors | ternary('On','Off') }}
+display_errors         = {{ php_display_errors | ternary('On','Off') }}
+display_startup_errors = {{ php_display_startup_errors | ternary('On','Off') }}
+error_log              = {{ php_error_log }}
+log_errors             = {{ php_log_errors | ternary('On','Off') }}
+
+; region
+date.timezone          = {{ php_date_timezone }}
+default_charset        = "{{ php_default_charset }}"
+
+; uploads
+file_uploads           = {{ php_file_uploads | ternary('On','Off') }}
+upload_max_filesize    = {{ php_upload_max_filesize }}
+post_max_size          = {{ php_post_max_size }}
+max_file_uploads       = {{ php_max_file_uploads }}
+
+; sessions
+session.save_handler            = {{ php_session_save_handler }}
+session.save_path               = {{ php_session_save_path }}
+session.gc_divisor              = {{ php_session_gc_divisor }}
+session.gc_probability          = {{ php_session_gc_probability }}
+session.gc_maxlifetime          = {{ php_session_gc_maxlifetime }}
+session.cookie_lifetime         = {{ php_session_cookie_lifetime }}
+session.upload_progress.enabled = {{ php_session_upload_progress_enabled | ternary('On','Off') }}
+session.upload_progress.cleanup = {{ php_session_upload_progress_cleanup | ternary('On','Off') }}
+session.cookie_secure           = {{ php_session_cookie_secure | ternary('On','Off') }}
+session.cookie_httponly         = {{ php_session_cookie_httponly | ternary('On','Off') }}
+session.cookie_samesite         = {{ php_session_cookie_samesite }}
+
+; opcache
+opcache.enable                  = {{ php_opcache_enable | ternary('On','Off') }}
+opcache.enable_cli              = {{ php_opcache_enable_cli | ternary('On','Off') }}
+opcache.memory_consumption      = {{ php_opcache_memory_consumption }}
+opcache.interned_strings_buffer = {{ php_opcache_interned_strings_buffer }}
+opcache.max_accelerated_files   = {{ php_opcache_max_accelerated_files }}
+opcache.revalidate_freq         = {{ php_opcache_revalidate_freq }}
+opcache.validate_timestamps     = {{ php_opcache_validate_timestamps | ternary('On','Off') }}
+
+; extra
+{% for key, value in php_extra_ini | dictsort %}
+{% if value is boolean -%}
+{{ key }} = {{ value | ternary('On','Off') }}
+{%- elif value is string and (' ' in value) -%}
+{{ key }} = "{{ value }}"
+{%- else -%}
+{{ key }} = {{ value }}
+{%- endif %}
+{% endfor %}

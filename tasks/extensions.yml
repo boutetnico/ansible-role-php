@@ -1,0 +1,30 @@
+---
+- name: Install pear dependencies
+  community.general.pear:
+    name: "{{ item }}"
+    state: "{{ php_pear_packages_state }}"
+  loop: "{{ php_pear_packages }}"
+  notify: Reload php-fpm
+
+- name: Ensure mods-available dir exists
+  ansible.builtin.file:
+    group: root
+    mode: "0755"
+    owner: root
+    path: "/etc/php/{{ php_version }}/mods-available"
+    state: directory
+
+- name: Write extension ini
+  ansible.builtin.template:
+    dest: "/etc/php/{{ php_version }}/mods-available/{{ item.name }}.ini"
+    group: root
+    mode: "0644"
+    owner: root
+    src: etc/php/mods-available/mod.ini.j2
+  loop: "{{ php_extensions }}"
+
+- name: Ensure extensions are enabled
+  ansible.builtin.command: "phpenmod -v ALL -s ALL {{ item.name }}"
+  register: _phpenmod
+  changed_when: _phpenmod.rc == 0 and 'phpenmod' in _phpenmod.stdout
+  loop: "{{ php_extensions }}"

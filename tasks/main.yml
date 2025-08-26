@@ -1,0 +1,66 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: "{{ php_dependencies }}"
+    state: present
+    update_cache: true
+
+- name: Ensure python3-debian is installed (Debian)
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+  when: ansible_distribution == "Debian"
+
+- name: Configure Sury APT repository (Debian)
+  ansible.builtin.deb822_repository:
+    name: sury
+    uris: https://packages.sury.org/php
+    suites: "{{ ansible_distribution_release }}"
+    components: [main]
+    types: [deb, deb-src]
+    signed_by: https://packages.sury.org/php/apt.gpg
+  when: ansible_distribution == "Debian"
+
+- name: Ensure software-properties-common installed (Ubuntu)
+  ansible.builtin.apt:
+    name: software-properties-common
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Add ondrej/php PPA (Ubuntu)
+  ansible.builtin.apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install php
+  ansible.builtin.apt:
+    name: "{{ php_packages + php_extra_packages }}"
+    state: "{{ php_packages_state }}"
+    update_cache: true
+  notify: Reload php-fpm
+
+- name: Setup php.ini for php-cli
+  ansible.builtin.template:
+    dest: "/etc/php/{{ php_version }}/cli/php.ini"
+    group: root
+    mode: "0644"
+    owner: root
+    src: etc/php/php.ini.j2
+
+- name: Check if php-fpm is installed
+  ansible.builtin.stat:
+    path: "/etc/php/{{ php_version }}/fpm"
+  register: php_fpm_directory
+
+- name: Include php-fpm tasks
+  ansible.builtin.import_tasks: fpm.yml
+  when: php_fpm_directory.stat.isdir | default(false)
+
+- name: Setup extensions
+  ansible.builtin.import_tasks: extensions.yml
+
+- name: Setup systemd config
+  ansible.builtin.import_tasks: systemd.yml
+  when: php_fpm_directory.stat.isdir | default(false)

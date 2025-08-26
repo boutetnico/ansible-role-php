@@ -1,0 +1,83 @@
+; {{ ansible_managed }}
+
+[{{ item.name }}]
+
+; listen
+listen = {{ item.listen | d("/run/php/php" ~ php_version ~ "-fpm.sock") }}
+listen.mode = 0660
+listen.owner = {{ item.user | d("www-data") }}
+listen.group = {{ item.group | d("www-data") }}
+
+; owner
+user = {{ item.user | d("www-data") }}
+group = {{ item.group | d("www-data") }}
+
+; pm
+pm = {{ item.pm | d("dynamic") }}
+pm.max_children = {{ item.pm_max_children | d(5) }}
+pm.start_servers = {{ item.pm_start_servers | d(2) }}
+pm.min_spare_servers = {{ item.pm_min_spare_servers | d(1) }}
+pm.max_spare_servers = {{ item.pm_max_spare_servers | d(3) }}
+pm.max_requests = {{ item.pm_max_requests | d(1000) }}
+pm.status_path = /php_status/{{ item.name }}
+
+; error
+catch_workers_output = {{ (item.catch_workers_output | d(true)) | ternary("yes","no") }}
+
+; ping
+ping.path = /php_ping/{{ item.name }}
+
+{% if item.request_terminate_timeout is defined %}
+request_terminate_timeout = {{ item.request_terminate_timeout }}
+{% endif %}
+{% if item.request_slowlog_timeout is defined %}
+request_slowlog_timeout = {{ item.request_slowlog_timeout }}
+{% endif %}
+{% if item.slowlog is defined %}
+slowlog = {{ item.slowlog }}
+{% endif %}
+{% if item.access_log is defined %}
+access.log = {{ item.access_log }}
+{% endif %}
+{% if item.access_format is defined %}
+access.format = {{ item.access_format }}
+{% endif %}
+
+{% if item.php_flags is defined %}
+; php flags
+{%   if item.php_flags is mapping %}
+{%     for k, v in item.php_flags|dictsort %}
+php_flag[{{ k }}] = {{ v }}
+{%     endfor %}
+{%   else %}
+{%     for var in item.php_flags %}
+php_flag[{{ var.name }}] = {{ var.value }}
+{%     endfor %}
+{%   endif %}
+{% endif %}
+
+{% if item.php_values is defined %}
+; php values
+{%   if item.php_values is mapping %}
+{%     for k, v in item.php_values|dictsort %}
+php_value[{{ k }}] = "{{ v }}"
+{%     endfor %}
+{%   else %}
+{%     for var in item.php_values %}
+php_value[{{ var.name }}] = "{{ var.value }}"
+{%     endfor %}
+{%   endif %}
+{% endif %}
+
+{% if item.env is defined %}
+; environment variables
+{%   if item.env is mapping %}
+{%     for k, v in item.env|dictsort %}
+env[{{ k }}] = {{ v }}
+{%     endfor %}
+{%   else %}
+{%     for var in item.env %}
+env[{{ var.name }}] = {{ var.value }}
+{%     endfor %}
+{%   endif %}
+{% endif %}

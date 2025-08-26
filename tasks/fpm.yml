@@ -1,0 +1,46 @@
+---
+- name: Ensure php-fpm starts on boot
+  ansible.builtin.service:
+    enabled: true
+    name: "php{{ php_version }}-fpm"
+
+- name: Copy php.ini (fpm)
+  ansible.builtin.template:
+    dest: "/etc/php/{{ php_version }}/fpm/php.ini"
+    group: root
+    mode: "0644"
+    owner: root
+    src: etc/php/php.ini.j2
+  notify: Reload php-fpm
+
+- name: Ensure pool.d dir exists
+  ansible.builtin.file:
+    group: root
+    mode: "0755"
+    owner: root
+    path: "/etc/php/{{ php_version }}/fpm/pool.d"
+    state: directory
+
+- name: Setup fpm pools
+  ansible.builtin.template:
+    dest: "/etc/php/{{ php_version }}/fpm/pool.d/{{ item.name }}.conf"
+    group: root
+    mode: "0644"
+    owner: root
+    src: etc/php/fpm/pool.d/pool.conf.j2
+  loop: "{{ php_fpm_pools }}"
+  loop_control:
+    label: "{{ item.name }}"
+  notify: Reload php-fpm
+
+- name: Set php-fpm log level
+  community.general.ini_file:
+    create: true
+    group: root
+    mode: "0644"
+    option: log_level
+    owner: root
+    path: "/etc/php/{{ php_version }}/fpm/php-fpm.conf"
+    section: global
+    value: "{{ php_fpm_log_level }}"
+  notify: Reload php-fpm

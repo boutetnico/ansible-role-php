@@ -1,0 +1,95 @@
+---
+php_version: "8.4"
+
+# packages
+php_dependencies:
+  - apt-transport-https
+  - gnupg
+php_packages:
+  - 'php{{ php_version }}-cli'
+  - 'php{{ php_version }}-fpm'
+php_extra_packages: []
+php_packages_state: present
+
+# pear
+php_pear_packages: []
+php_pear_packages_state: present
+
+# extensions
+php_extensions: []
+#  - name: uv
+#    config:
+#      extension: "uv.so"
+
+php_engine: true
+php_expose_php: false
+
+# limits
+php_max_execution_time: 30
+php_memory_limit: 128M
+php_default_socket_timeout: 60
+
+# errors
+php_error_reporting: E_ALL
+php_html_errors: false
+php_display_errors: false
+php_display_startup_errors: false
+php_error_log: syslog
+php_log_errors: true
+
+# region
+php_date_timezone: UTC
+php_default_charset: UTF-8
+
+# upload
+php_file_uploads: true
+php_upload_max_filesize: 2M
+php_post_max_size: 8M
+php_max_file_uploads: 20
+
+# session
+php_session_save_handler: files
+php_session_save_path: ""
+php_session_gc_divisor: 100
+php_session_gc_probability: 1
+php_session_gc_maxlifetime: 1440
+php_session_cookie_lifetime: 0
+php_session_upload_progress_enabled: true
+php_session_upload_progress_cleanup: true
+php_session_cookie_secure: true
+php_session_cookie_httponly: true
+php_session_cookie_samesite: Lax
+
+# opcache
+php_opcache_enable: true
+php_opcache_enable_cli: false
+php_opcache_memory_consumption: 128
+php_opcache_interned_strings_buffer: 8
+php_opcache_max_accelerated_files: 10000
+php_opcache_revalidate_freq: 2
+php_opcache_validate_timestamps: true
+
+# fpm
+php_fpm_log_level: warning
+php_fpm_pools:
+  - name: www
+    user: www-data
+    group: www-data
+    listen: "/run/php/php{{ php_version }}-fpm.sock"
+    pm: dynamic
+    pm_max_children: 5
+    pm_start_servers: 2
+    pm_min_spare_servers: 1
+    pm_max_spare_servers: 3
+
+# extra ini settings
+php_extra_ini: {}
+# realpath_cache_size: 4096K
+# realpath_cache_ttl: 600
+# mysqlnd.net_cmd_buffer_size: 16384
+
+# systemd
+php_fpm_systemd_override:
+  Service:
+    Restart: on-failure
+    RestartSec: 5s
