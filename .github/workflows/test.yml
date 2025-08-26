@@ -25,7 +25,7 @@ jobs:
         run: sudo apt-get remove --purge -y ansible
 
       - name: Install dependencies
-        run: pip install ansible ansible-lint docker molecule molecule-plugins[docker] pytest-testinfra
+        run: pip install ansible ansible-lint docker molecule molecule-plugins[docker] pytest-testinfra black
 
       - name: Display versions
         run: |
@@ -33,9 +33,6 @@ jobs:
           pip --version
           ansible --version
           molecule --version
-
-      - name: Install role dependencies
-        run: ansible-galaxy role install -r meta/requirements.yml
 
       - name: Lint code
         run: |
