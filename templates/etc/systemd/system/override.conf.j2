@@ -1,4 +1,4 @@
-; {{ ansible_managed }}
+# {{ ansible_managed }}
 {% for section, options in php_fpm_systemd_override | dictsort %}
 [{{ section }}]
 {%   for key, value in options | dictsort %}
