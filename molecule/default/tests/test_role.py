@@ -55,6 +55,7 @@ def test_php_cli_ini_exists(host):
     assert_ini_kv(c, "opcache.memory_consumption", "128")
     assert_ini_kv(c, "opcache.interned_strings_buffer", "8")
     assert_ini_kv(c, "opcache.max_accelerated_files", "10000")
+    assert_ini_kv(c, "opcache.max_wasted_percentage ", "5")
     assert_ini_kv(c, "opcache.revalidate_freq", "2")
     assert_ini_kv(c, "opcache.validate_timestamps", "On")
 

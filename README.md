@@ -65,6 +65,7 @@ Role Variables
 | php_opcache_memory_consumption      | true     | `128`     | int             | Opcache memory size (MB)              |
 | php_opcache_interned_strings_buffer | true     | `8`       | int             | Opcache interned strings buffer       |
 | php_opcache_max_accelerated_files   | true     | `10000`   | int             | Opcache max accelerated files         |
+| php_opcache_max_wasted_percentage   | true     | `5`       | int             |                                       |
 | php_opcache_revalidate_freq         | true     | `2`       | int             | Opcache revalidate frequency          |
 | php_opcache_validate_timestamps     | true     | `true`    | bool            | Validate opcache timestamps           |
 | php_fpm_log_level                   | true     | `warning` | string          | FPM log level                         |
