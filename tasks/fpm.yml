@@ -21,12 +21,6 @@
     path: "/etc/php/{{ php_version }}/fpm/pool.d"
     state: directory
 
-- name: Remove default www.conf pool
-  ansible.builtin.file:
-    path: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
-    state: absent
-  notify: Reload php-fpm
-
 - name: Setup fpm pools
   ansible.builtin.template:
     dest: "/etc/php/{{ php_version }}/fpm/pool.d/{{ item.name }}.conf"
