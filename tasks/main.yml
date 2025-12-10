@@ -9,30 +9,30 @@
   ansible.builtin.apt:
     name: python3-debian
     state: present
-  when: ansible_distribution == "Debian"
+  when: ansible_facts['distribution'] == "Debian"
 
 - name: Configure Sury APT repository (Debian)
   ansible.builtin.deb822_repository:
     name: sury
     uris: https://packages.sury.org/php
-    suites: "{{ ansible_distribution_release }}"
+    suites: "{{ ansible_facts['distribution_release'] }}"
     components: [main]
     types: [deb, deb-src]
     signed_by: https://packages.sury.org/php/apt.gpg
-  when: ansible_distribution == "Debian"
+  when: ansible_facts['distribution'] == "Debian"
 
 - name: Ensure software-properties-common installed (Ubuntu)
   ansible.builtin.apt:
     name: software-properties-common
     state: present
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: Add ondrej/php PPA (Ubuntu)
   ansible.builtin.apt_repository:
     repo: ppa:ondrej/php
     state: present
     update_cache: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: Install php
   ansible.builtin.apt:
