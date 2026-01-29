@@ -4,3 +4,11 @@
 
   roles:
     - role: boutetnico.php
+      php_extra_ini:
+        realpath_cache_size: 4096K
+        realpath_cache_ttl: 600
+        mysqlnd.net_cmd_buffer_size: 16384
+        zend.detect_unicode: true
+        allow_url_fopen: false
+        zend.multibyte: "On"
+        zend.script_encoding: "Off"

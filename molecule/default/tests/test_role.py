@@ -60,6 +60,23 @@ def test_php_cli_ini_exists(host):
     assert_ini_kv(c, "opcache.validate_timestamps", "On")
 
 
+def test_php_extra_ini(host):
+    f = host.file(f"/etc/php/{PHP_VERSION}/cli/php.ini")
+    c = f.content_string
+
+    # plain string value
+    assert_ini_kv(c, "realpath_cache_size", "4096K")
+    # integer value
+    assert_ini_kv(c, "realpath_cache_ttl", "600")
+    assert_ini_kv(c, "mysqlnd.net_cmd_buffer_size", "16384")
+    # boolean values
+    assert_ini_kv(c, "zend.detect_unicode", "On")
+    assert_ini_kv(c, "allow_url_fopen", "Off")
+    # string "On"/"Off" values (not booleans)
+    assert_ini_kv(c, "zend.multibyte", "On")
+    assert_ini_kv(c, "zend.script_encoding", "Off")
+
+
 def test_php_fpm_ini_exists(host):
     f = host.file(f"/etc/php/{PHP_VERSION}/fpm/php.ini")
     assert f.exists and f.is_file

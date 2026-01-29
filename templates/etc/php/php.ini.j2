@@ -53,11 +53,11 @@ opcache.validate_timestamps     = {{ php_opcache_validate_timestamps | ternary('
 
 ; extra
 {% for key, value in php_extra_ini | dictsort %}
-{% if value is boolean -%}
+{%- if value is boolean %}
 {{ key }} = {{ value | ternary('On','Off') }}
-{%- elif value is string and (' ' in value) -%}
+{% elif value is string and (' ' in value) %}
 {{ key }} = "{{ value }}"
-{%- else -%}
+{% else %}
 {{ key }} = {{ value }}
-{%- endif %}
+{% endif -%}
 {% endfor %}
