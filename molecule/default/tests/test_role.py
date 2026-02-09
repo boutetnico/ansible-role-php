@@ -3,6 +3,13 @@ import re
 PHP_VERSION = "8.4"
 
 
+def test_dependencies_are_installed_debian(host):
+    distro = host.system_info.distribution.lower()
+    if "debian" in distro:
+        pkg = host.package("python3-debian")
+        assert pkg.is_installed
+
+
 def test_repo_exists(host):
     distro = host.system_info.distribution.lower()
     if "debian" in distro:
@@ -14,6 +21,12 @@ def test_repo_exists(host):
 def test_php_package_installed(host):
     pkg = host.package(f"php{PHP_VERSION}-fpm")
     assert pkg.is_installed
+
+
+def test_php_version_output(host):
+    cmd = host.run("php --version")
+    assert cmd.rc == 0
+    assert PHP_VERSION in cmd.stdout
 
 
 def assert_ini_kv(content: str, key: str, value: str):
