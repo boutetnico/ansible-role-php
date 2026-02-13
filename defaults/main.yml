@@ -3,7 +3,6 @@ php_version: "8.4"
 
 # packages
 php_dependencies:
-  - apt-transport-https
   - gnupg
 php_packages:
   - 'php{{ php_version }}-cli'
