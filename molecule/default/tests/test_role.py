@@ -132,3 +132,21 @@ def test_php_fpm_service_running_enabled(host):
 def test_fpm_socket_exists(host):
     s = host.socket(f"unix:///run/php/php{PHP_VERSION}-fpm.sock")
     assert s.is_listening
+
+
+def test_extension_sapi_cli_only(host):
+    ini = host.file(f"/etc/php/{PHP_VERSION}/mods-available/testmod_cli.ini")
+    assert ini.exists and ini.is_file
+    cli_link = host.file(f"/etc/php/{PHP_VERSION}/cli/conf.d/20-testmod_cli.ini")
+    assert cli_link.exists
+    fpm_link = host.file(f"/etc/php/{PHP_VERSION}/fpm/conf.d/20-testmod_cli.ini")
+    assert not fpm_link.exists
+
+
+def test_extension_sapi_all(host):
+    ini = host.file(f"/etc/php/{PHP_VERSION}/mods-available/testmod_all.ini")
+    assert ini.exists and ini.is_file
+    cli_link = host.file(f"/etc/php/{PHP_VERSION}/cli/conf.d/20-testmod_all.ini")
+    assert cli_link.exists
+    fpm_link = host.file(f"/etc/php/{PHP_VERSION}/fpm/conf.d/20-testmod_all.ini")
+    assert fpm_link.exists

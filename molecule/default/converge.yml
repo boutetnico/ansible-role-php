@@ -4,6 +4,12 @@
 
   roles:
     - role: boutetnico.php
+      php_extensions:
+        - name: testmod_cli
+          sapi: cli
+          config: {}
+        - name: testmod_all
+          config: {}
       php_extra_ini:
         realpath_cache_size: 4096K
         realpath_cache_ttl: 600

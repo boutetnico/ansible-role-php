@@ -31,7 +31,7 @@ Role Variables
 | php_packages_state                  | true     | `present` | present/absent  | State of PHP packages                 |
 | php_pear_packages                   | true     | `[]`      | list            | PEAR packages                         |
 | php_pear_packages_state             | true     | `present` | present/absent  | State of PEAR packages                |
-| php_extensions                      | true     | `[]`      | list(dict)      | Extra extensions with config          |
+| php_extensions                      | true     | `[]`      | list(dict)      | Extra extensions (name, sapi, config) |
 | php_engine                          | true     | `true`    | bool            | Enable PHP engine                     |
 | php_expose_php                      | true     | `false`   | bool            | Expose PHP via headers                |
 | php_max_execution_time              | true     | `30`      | int             | Script execution time in seconds      |

@@ -17,6 +17,7 @@ php_pear_packages_state: present
 # extensions
 php_extensions: []
 #  - name: uv
+#    sapi: cli  # optional: ALL (default), cli, fpm
 #    config:
 #      extension: "uv.so"
 

@@ -24,7 +24,7 @@
   loop: "{{ php_extensions }}"
 
 - name: Ensure extensions are enabled
-  ansible.builtin.command: "phpenmod -v ALL -s ALL {{ item.name }}"
+  ansible.builtin.command: "phpenmod -v ALL -s {{ item.sapi | default('ALL') }} {{ item.name }}"
   register: _phpenmod
   changed_when: _phpenmod.rc == 0 and 'phpenmod' in _phpenmod.stdout
   loop: "{{ php_extensions }}"
