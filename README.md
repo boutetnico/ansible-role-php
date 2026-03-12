@@ -68,6 +68,7 @@ Role Variables
 | php_opcache_max_wasted_percentage   | true     | `5`       | int             |                                       |
 | php_opcache_revalidate_freq         | true     | `2`       | int             | Opcache revalidate frequency          |
 | php_opcache_validate_timestamps     | true     | `true`    | bool            | Validate opcache timestamps           |
+| php_fpm_process_control_timeout     | true     | `0`       | int             | FPM process control timeout (s)       |
 | php_fpm_log_level                   | true     | `warning` | string          | FPM log level                         |
 | php_fpm_pools                       | true     |           | list(dict)      | See `defaults/main.yml`               |
 | php_extra_ini                       | true     | `{}`      | dict            | Extra ini settings (key/value pairs)  |

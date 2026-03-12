@@ -71,6 +71,7 @@ php_opcache_revalidate_freq: 2
 php_opcache_validate_timestamps: true
 
 # fpm
+php_fpm_process_control_timeout: 0
 php_fpm_log_level: warning
 php_fpm_pools:
   - name: www

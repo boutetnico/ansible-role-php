@@ -105,6 +105,12 @@ def test_php_fpm_pool_managed(host):
     assert "ping.path = /php_ping/www" in c
 
 
+def test_php_fpm_conf_process_control_timeout(host):
+    f = host.file(f"/etc/php/{PHP_VERSION}/fpm/php-fpm.conf")
+    assert f.exists and f.is_file
+    assert "process_control_timeout = 0" in f.content_string
+
+
 def test_php_fpm_conf_log_level(host):
     f = host.file(f"/etc/php/{PHP_VERSION}/fpm/php-fpm.conf")
     assert f.exists and f.is_file
