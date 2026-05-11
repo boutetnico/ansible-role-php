@@ -10,6 +10,9 @@ php_packages:
 php_extra_packages: []
 php_packages_state: present
 
+# pin Sury as preferred apt source on Debian (priority 600 beats the default 500)
+php_pin_sury: true
+
 # pear
 php_pear_packages: []
 php_pear_packages_state: present

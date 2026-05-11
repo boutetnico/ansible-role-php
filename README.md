@@ -29,6 +29,7 @@ Role Variables
 | php_packages                        | true     |           | list            | See `defaults/main.yml`               |
 | php_extra_packages                  | true     | `[]`      | list            | Additional PHP packages               |
 | php_packages_state                  | true     | `present` | present/absent  | State of PHP packages                 |
+| php_pin_sury                        | true     | `true`    | bool            | Pin Sury at priority 600 (Debian)     |
 | php_pear_packages                   | true     | `[]`      | list            | PEAR packages                         |
 | php_pear_packages_state             | true     | `present` | present/absent  | State of PEAR packages                |
 | php_extensions                      | true     | `[]`      | list(dict)      | Extra extensions (name, sapi, config) |

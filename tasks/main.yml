@@ -21,6 +21,20 @@
     signed_by: https://packages.sury.org/php/apt.gpg
   when: ansible_facts['distribution'] == "Debian"
 
+- name: Pin Sury as preferred source for php packages (Debian)
+  ansible.builtin.copy:
+    content: |
+      Package: *
+      Pin: origin "packages.sury.org"
+      Pin-Priority: 600
+    dest: /etc/apt/preferences.d/sury.pref
+    group: root
+    mode: "0644"
+    owner: root
+  when:
+    - ansible_facts['distribution'] == "Debian"
+    - php_pin_sury | bool
+
 - name: Ensure software-properties-common installed (Ubuntu)
   ansible.builtin.apt:
     name: software-properties-common
