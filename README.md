@@ -9,7 +9,7 @@ This role installs [PHP](https://www.php.net/).
 Requirements
 ------------
 
-Ansible 2.10 or newer.
+Ansible 2.15 or newer.
 
 Supported Platforms
 -------------------
@@ -30,6 +30,7 @@ Role Variables
 | php_extra_packages                  | true     | `[]`      | list            | Additional PHP packages               |
 | php_packages_state                  | true     | `present` | present/absent  | State of PHP packages                 |
 | php_pin_sury                        | true     | `true`    | bool            | Pin Sury at priority 600 (Debian)     |
+| php_ondrej_ppa_key_url              | false    |           | string          | ondrej/php PPA signing key URL        |
 | php_pear_packages                   | true     | `[]`      | list            | PEAR packages                         |
 | php_pear_packages_state             | true     | `present` | present/absent  | State of PEAR packages                |
 | php_extensions                      | true     | `[]`      | list(dict)      | Extra extensions (name, sapi, config) |

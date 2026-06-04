@@ -13,6 +13,10 @@ php_packages_state: present
 # pin Sury as preferred apt source on Debian (priority 600 beats the default 500)
 php_pin_sury: true
 
+# signing key for the ondrej/php PPA (Ubuntu), fetched by fingerprint at provision time
+# fingerprint B8DC7E53946656EFBCE4C1DD71DAEAAB4AD4CAB6 (Launchpad PPA for Ondřej Surý)
+php_ondrej_ppa_key_url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xB8DC7E53946656EFBCE4C1DD71DAEAAB4AD4CAB6"
+
 # pear
 php_pear_packages: []
 php_pear_packages_state: present
