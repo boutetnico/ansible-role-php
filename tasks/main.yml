@@ -40,11 +40,14 @@
     state: present
   when: ansible_facts['distribution'] == "Ubuntu"
 
+# key vendored in files/ondrej-php.asc because keyserver.ubuntu.com responses
+# are not byte-stable, which breaks idempotence when passing a URL to signed_by
+# fingerprint B8DC7E53946656EFBCE4C1DD71DAEAAB4AD4CAB6 (Launchpad PPA for Ondřej Surý)
 - name: Add ondrej/php PPA (Ubuntu)
   ansible.builtin.deb822_repository:
     components: [main]
     name: ondrej-php
-    signed_by: "{{ php_ondrej_ppa_key_url }}"
+    signed_by: "{{ lookup('ansible.builtin.file', 'ondrej-php.asc') }}"
     suites: "{{ ansible_facts['distribution_release'] }}"
     types: [deb]
     uris: https://ppa.launchpadcontent.net/ondrej/php/ubuntu
