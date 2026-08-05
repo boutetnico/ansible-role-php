@@ -105,6 +105,10 @@ def test_php_fpm_pool_managed(host):
     assert "pm = dynamic" in c
     assert "pm.status_path = /php_status/www" in c
     assert "ping.path = /php_ping/www" in c
+    # php_admin_* are the only way to set PHP_INI_SYSTEM directives per pool
+    assert 'php_admin_value[disable_functions] = "exec,shell_exec"' in c
+    assert 'php_admin_value[open_basedir] = "/var/www/:/tmp/"' in c
+    assert "php_admin_flag[allow_url_fopen] = Off" in c
 
 
 def test_php_fpm_conf_process_control_timeout(host):

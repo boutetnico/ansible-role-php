@@ -69,6 +69,32 @@ php_value[{{ var.name }}] = "{{ var.value }}"
 {%   endif %}
 {% endif %}
 
+{% if item.php_admin_flags is defined %}
+; php admin flags -- unlike php_flag, these cannot be overridden by ini_set()
+{%   if item.php_admin_flags is mapping %}
+{%     for k, v in item.php_admin_flags|dictsort %}
+php_admin_flag[{{ k }}] = {{ v }}
+{%     endfor %}
+{%   else %}
+{%     for var in item.php_admin_flags %}
+php_admin_flag[{{ var.name }}] = {{ var.value }}
+{%     endfor %}
+{%   endif %}
+{% endif %}
+
+{% if item.php_admin_values is defined %}
+; php admin values -- required for PHP_INI_SYSTEM settings such as disable_functions
+{%   if item.php_admin_values is mapping %}
+{%     for k, v in item.php_admin_values|dictsort %}
+php_admin_value[{{ k }}] = "{{ v }}"
+{%     endfor %}
+{%   else %}
+{%     for var in item.php_admin_values %}
+php_admin_value[{{ var.name }}] = "{{ var.value }}"
+{%     endfor %}
+{%   endif %}
+{% endif %}
+
 {% if item.env is defined %}
 ; environment variables
 {%   if item.env is mapping %}

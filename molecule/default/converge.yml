@@ -4,6 +4,21 @@
 
   roles:
     - role: boutetnico.php
+      php_fpm_pools:
+        - name: www
+          user: www-data
+          group: www-data
+          listen: "/run/php/php{{ php_version }}-fpm.sock"
+          pm: dynamic
+          pm_max_children: 5
+          pm_start_servers: 2
+          pm_min_spare_servers: 1
+          pm_max_spare_servers: 3
+          php_admin_values:
+            disable_functions: exec,shell_exec
+            open_basedir: /var/www/:/tmp/
+          php_admin_flags:
+            allow_url_fopen: "Off"
       php_extensions:
         - name: testmod_cli
           sapi: cli
