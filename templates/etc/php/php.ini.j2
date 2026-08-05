@@ -40,6 +40,7 @@ session.upload_progress.cleanup = {{ php_session_upload_progress_cleanup | terna
 session.cookie_secure           = {{ php_session_cookie_secure | ternary('On','Off') }}
 session.cookie_httponly         = {{ php_session_cookie_httponly | ternary('On','Off') }}
 session.cookie_samesite         = {{ php_session_cookie_samesite }}
+session.use_strict_mode         = {{ php_session_use_strict_mode | ternary('On','Off') }}
 
 ; opcache
 opcache.enable                  = {{ php_opcache_enable | ternary('On','Off') }}

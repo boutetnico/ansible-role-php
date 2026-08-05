@@ -63,6 +63,7 @@ def test_php_cli_ini_exists(host):
     assert_ini_kv(c, "session.cookie_secure", "On")
     assert_ini_kv(c, "session.cookie_httponly", "On")
     assert_ini_kv(c, "session.cookie_samesite", "Lax")
+    assert_ini_kv(c, "session.use_strict_mode", "On")
     assert_ini_kv(c, "opcache.enable", "On")
     assert_ini_kv(c, "opcache.enable_cli", "Off")
     assert_ini_kv(c, "opcache.memory_consumption", "128")

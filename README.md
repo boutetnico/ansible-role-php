@@ -61,6 +61,7 @@ Role Variables
 | php_session_cookie_secure           | true     | `true`    | bool            | Secure session cookies (HTTPS)        |
 | php_session_cookie_httponly         | true     | `true`    | bool            | HttpOnly session cookies              |
 | php_session_cookie_samesite         | true     | `Lax`     | string          | Session SameSite policy               |
+| php_session_use_strict_mode         | true     | `true`    | bool            | Reject session IDs not issued by PHP  |
 | php_opcache_enable                  | true     | `true`    | bool            | Enable opcache                        |
 | php_opcache_enable_cli              | true     | `false`   | bool            | Enable opcache in CLI                 |
 | php_opcache_memory_consumption      | true     | `128`     | int             | Opcache memory size (MB)              |

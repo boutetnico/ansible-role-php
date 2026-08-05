@@ -62,6 +62,7 @@ php_session_upload_progress_cleanup: true
 php_session_cookie_secure: true
 php_session_cookie_httponly: true
 php_session_cookie_samesite: Lax
+php_session_use_strict_mode: true
 
 # opcache
 php_opcache_enable: true
