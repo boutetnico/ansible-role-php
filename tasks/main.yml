@@ -60,6 +60,24 @@
     update_cache: true
   notify: Reload php-fpm
 
+# Only created when missing, so a custom save_path keeps whatever perms it was given.
+- name: Check the session save path
+  ansible.builtin.stat:
+    path: "{{ php_session_save_path }}"
+  register: php_session_save_dir
+  when: php_session_save_path | length > 0
+
+- name: Ensure the session save path exists
+  ansible.builtin.file:
+    group: root
+    mode: "1733"
+    owner: root
+    path: "{{ php_session_save_path }}"
+    state: directory
+  when:
+    - php_session_save_path | length > 0
+    - not (php_session_save_dir.stat.exists | default(false))
+
 - name: Setup php.ini for php-cli
   ansible.builtin.template:
     dest: "/etc/php/{{ php_version }}/cli/php.ini"
