@@ -72,6 +72,9 @@ Role Variables
 | php_opcache_validate_timestamps     | true     | `true`                  | bool            | Validate opcache timestamps           |
 | php_fpm_process_control_timeout     | true     | `0`                     | int             | FPM process control timeout (s)       |
 | php_fpm_log_level                   | true     | `warning`               | string          | FPM log level                         |
+| php_fpm_slowlog_logrotate           | true     | `true`                  | bool            | Rotate pool slowlogs                  |
+| php_fpm_slowlog_logrotate_rotate    | true     | `7`                     | int             | Slowlog rotations to keep             |
+| php_fpm_slowlog_logrotate_maxsize   | true     | `100M`                  | string          | Rotate slowlog early past this size   |
 | php_fpm_pools                       | true     |                         | list(dict)      | See `defaults/main.yml`               |
 | php_extra_ini                       | true     | `{}`                    | dict            | Extra ini settings (key/value pairs)  |
 | php_fpm_systemd_override            | true     |                         | dict            | See `defaults/main.yml`               |

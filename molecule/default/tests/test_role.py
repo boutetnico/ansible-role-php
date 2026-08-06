@@ -109,6 +109,18 @@ def test_php_fpm_pool_managed(host):
     assert 'php_admin_value[disable_functions] = "exec,shell_exec"' in c
     assert 'php_admin_value[open_basedir] = "/var/www/:/tmp/"' in c
     assert "php_admin_flag[allow_url_fopen] = Off" in c
+    assert "request_slowlog_timeout = 10s" in c
+    assert f"slowlog = /var/log/php{PHP_VERSION}-fpm-www-slow.log" in c
+
+
+def test_slowlog_logrotate_managed(host):
+    f = host.file(f"/etc/logrotate.d/php{PHP_VERSION}-fpm-slowlog")
+    assert f.exists and f.is_file
+    c = f.content_string
+    # the configured slowlog path must be listed, and rotation bounded
+    assert f"/var/log/php{PHP_VERSION}-fpm-www-slow.log" in c
+    assert "maxsize 100M" in c
+    assert "rotate 7" in c
 
 
 def test_php_fpm_conf_process_control_timeout(host):

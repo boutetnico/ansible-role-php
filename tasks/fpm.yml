@@ -40,6 +40,25 @@
     label: "{{ item.name }}"
   notify: Reload php-fpm
 
+# Debian's php-fpm logrotate covers one exact path, so pool slowlogs would never rotate.
+- name: Manage logrotate for pool slowlogs
+  ansible.builtin.template:
+    dest: /etc/logrotate.d/php{{ php_version }}-fpm-slowlog
+    group: root
+    mode: "0644"
+    owner: root
+    src: etc/logrotate.d/php-fpm-slowlog.j2
+  when:
+    - php_fpm_slowlog_logrotate
+    - php_fpm_pools | selectattr('slowlog', 'defined') | list | length > 0
+
+- name: Remove logrotate for pool slowlogs when none are configured
+  ansible.builtin.file:
+    path: /etc/logrotate.d/php{{ php_version }}-fpm-slowlog
+    state: absent
+  when: not php_fpm_slowlog_logrotate or
+        php_fpm_pools | selectattr('slowlog', 'defined') | list | length == 0
+
 - name: Set php-fpm process control timeout
   community.general.ini_file:
     create: true

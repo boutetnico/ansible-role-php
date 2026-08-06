@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+{% for pool in php_fpm_pools | selectattr('slowlog', 'defined') %}
+{{ pool.slowlog }}
+{% endfor %}
+{
+    daily
+    rotate {{ php_fpm_slowlog_logrotate_rotate }}
+    maxsize {{ php_fpm_slowlog_logrotate_maxsize }}
+    missingok
+    notifempty
+    compress
+    delaycompress
+    postrotate
+        if [ -x /usr/lib/php/php{{ php_version }}-fpm-reopenlogs ]; then
+            /usr/lib/php/php{{ php_version }}-fpm-reopenlogs;
+        fi
+    endscript
+}

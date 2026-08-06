@@ -79,6 +79,12 @@ php_opcache_validate_timestamps: true
 # fpm
 php_fpm_process_control_timeout: 0
 php_fpm_log_level: warning
+
+# Rotate the slowlogs declared by php_fpm_pools[].slowlog; Debian's own config misses them.
+php_fpm_slowlog_logrotate: true
+php_fpm_slowlog_logrotate_rotate: 7
+php_fpm_slowlog_logrotate_maxsize: 100M
+
 php_fpm_pools:
   - name: www
     user: www-data
