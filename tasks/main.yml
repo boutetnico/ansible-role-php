@@ -34,6 +34,14 @@
     - ansible_facts['distribution'] == "Debian"
     - php_pin_sury | bool
 
+- name: Remove Sury pin (Debian)
+  ansible.builtin.file:
+    path: /etc/apt/preferences.d/sury.pref
+    state: absent
+  when:
+    - ansible_facts['distribution'] == "Debian"
+    - not php_pin_sury | bool
+
 - name: Ensure software-properties-common installed (Ubuntu)
   ansible.builtin.apt:
     name: software-properties-common
